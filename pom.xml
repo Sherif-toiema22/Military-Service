@@ -15,6 +15,16 @@
     </properties>
 
     <dependencies>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-controls</artifactId>
+            <version>21</version>
+        </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-fxml</artifactId>
+            <version>21</version>
+        </dependency>
         <!-- JavaFX modules you need -->
         <dependency>
             <groupId>org.openjfx</groupId>
@@ -29,8 +39,19 @@
     </dependencies>
 
     <build>
+
         <plugins>
             <!-- Maven exec plugin for running -->
+
+                <plugin>
+                    <groupId>org.openjfx</groupId>
+                    <artifactId>javafx-maven-plugin</artifactId>
+                    <version>0.0.8</version>
+                    <configuration>
+                        <mainClass>CsvDiffUI</mainClass>
+                    </configuration>
+                </plugin>
+
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>

@@ -25,26 +25,24 @@ public class FileDiff extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        primaryStage.setTitle("Arabic File Difference Tool");
+        primaryStage.setTitle("CSV Difference Tool (Arabic Supported)");
 
-        // UI elements
-        Button loadFile1Btn = new Button("حمل الملف 1");
-        Button loadFile2Btn = new Button("حمل الملف 2");
+        Button loadFile1Btn = new Button("Load CSV File 1");
+        Button loadFile2Btn = new Button("Load CSV File 2");
         Button compareBtn = new Button("Compare");
 
         textArea1 = new TextArea();
         textArea2 = new TextArea();
         diffArea = new TextArea();
 
-        textArea1.setPromptText("File 1 content...");
-        textArea2.setPromptText("File 2 content...");
+        textArea1.setPromptText("CSV File 1 content...");
+        textArea2.setPromptText("CSV File 2 content...");
         diffArea.setPromptText("Differences will appear here...");
 
         textArea1.setWrapText(true);
         textArea2.setWrapText(true);
         diffArea.setWrapText(true);
 
-        // Layout
         HBox buttons = new HBox(10, loadFile1Btn, loadFile2Btn, compareBtn);
         VBox root = new VBox(10, buttons,
                 new Label("File 1:"), textArea1,
@@ -72,8 +70,7 @@ public class FileDiff extends Application {
 
         compareBtn.setOnAction(e -> compareFiles());
 
-        // Scene
-        Scene scene = new Scene(root, 800, 600);
+        Scene scene = new Scene(root, 900, 600);
         primaryStage.setScene(scene);
         primaryStage.show();
     }
@@ -81,13 +78,14 @@ public class FileDiff extends Application {
     private File chooseFile(Stage stage) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.getExtensionFilters().addAll(
-                new FileChooser.ExtensionFilter("Text Files", "*.txt"),
+                new FileChooser.ExtensionFilter("CSV Files", "*.csv"),
                 new FileChooser.ExtensionFilter("All Files", "*.*"));
         return fileChooser.showOpenDialog(stage);
     }
 
     private List<String> readFile(File file) {
         try {
+            // Reads CSV as plain lines (UTF-8 ensures Arabic text works)
             return Files.readAllLines(file.toPath(), StandardCharsets.UTF_8);
         } catch (IOException e) {
             showError("Error reading file: " + file.getName());
@@ -106,10 +104,10 @@ public class FileDiff extends Application {
         diff2.removeAll(set1);
 
         StringBuilder sb = new StringBuilder();
-        sb.append("Lines in File1 but not in File2:\n");
+        sb.append("Rows in File1 but not in File2:\n");
         diff1.forEach(line -> sb.append(line).append("\n"));
 
-        sb.append("\nLines in File2 but not in File1:\n");
+        sb.append("\nRows in File2 but not in File1:\n");
         diff2.forEach(line -> sb.append(line).append("\n"));
 
         diffArea.setText(sb.toString());
