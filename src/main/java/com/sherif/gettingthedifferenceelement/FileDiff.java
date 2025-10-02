@@ -28,8 +28,8 @@ public class FileDiff extends Application {
         primaryStage.setTitle("Arabic File Difference Tool");
 
         // UI elements
-        Button loadFile1Btn = new Button("Load File 1");
-        Button loadFile2Btn = new Button("Load File 2");
+        Button loadFile1Btn = new Button("حمل الملف 1");
+        Button loadFile2Btn = new Button("حمل الملف 2");
         Button compareBtn = new Button("Compare");
 
         textArea1 = new TextArea();
