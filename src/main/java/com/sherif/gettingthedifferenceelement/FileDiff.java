@@ -94,8 +94,13 @@ public class FileDiff extends Application {
     }
 
     private void compareFiles() {
-        Set<String> set1 = new HashSet<>(file1Lines);
-        Set<String> set2 = new HashSet<>(file2Lines);
+        // Extract names with line numbers
+        Map<String, Integer> names1 = extractNamesWithLineNumbers(file1Lines);
+        Map<String, Integer> names2 = extractNamesWithLineNumbers(file2Lines);
+
+        // Just sets for difference calculation
+        Set<String> set1 = new HashSet<>(names1.keySet());
+        Set<String> set2 = new HashSet<>(names2.keySet());
 
         Set<String> diff1 = new HashSet<>(set1);
         diff1.removeAll(set2);
@@ -103,15 +108,43 @@ public class FileDiff extends Application {
         Set<String> diff2 = new HashSet<>(set2);
         diff2.removeAll(set1);
 
+        // Show result
         StringBuilder sb = new StringBuilder();
-        sb.append("Rows in File1 but not in File2:\n");
-        diff1.forEach(line -> sb.append(line).append("\n"));
+        sb.append("Names in File1 but not in File2:\n");
+        diff1.forEach(name -> sb.append("Line ")
+                .append(names1.get(name))
+                .append(": ")
+                .append(name)
+                .append("\n"));
 
-        sb.append("\nRows in File2 but not in File1:\n");
-        diff2.forEach(line -> sb.append(line).append("\n"));
+        sb.append("\nNames in File2 but not in File1:\n");
+        diff2.forEach(name -> sb.append("Line ")
+                .append(names2.get(name))
+                .append(": ")
+                .append(name)
+                .append("\n"));
 
         diffArea.setText(sb.toString());
     }
+
+    private Map<String, Integer> extractNamesWithLineNumbers(List<String> lines) {
+        Map<String, Integer> names = new HashMap<>();
+        boolean skipHeader = true;
+        int lineNum = 0;
+        for (String line : lines) {
+            lineNum++;
+            if (skipHeader) {
+                skipHeader = false;
+                continue;
+            }
+            String[] parts = line.split(",");
+            if (parts.length > 1) {
+                names.put(parts[1].trim(), lineNum); // index 1 = name column
+            }
+        }
+        return names;
+    }
+
 
     private void showError(String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR, message, ButtonType.OK);
