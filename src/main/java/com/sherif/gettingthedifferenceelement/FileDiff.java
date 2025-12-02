@@ -151,7 +151,4 @@ public class FileDiff extends Application {
         alert.showAndWait();
     }
 
-    public static void main(String[] args) {
-        launch(args);
-    }
 }
